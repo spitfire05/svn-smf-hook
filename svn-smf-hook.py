@@ -44,6 +44,16 @@ FORUM_URL = 'http://example.com/index.php'
 # (aka password is cached)
 SVN_URL = 'svn://example.com/repo' 
 
+# Board id where to post all commits, or None to disable
+BOARD_MAIN = '1.0'
+
+# Board id where to post only commits marked with SPEC_CHAR
+BOARD_SPEC = '2.0'
+
+# Character, or string, to mark commits as special
+# Will work only if put on beginning of a line.
+SPEC_CHAR = '!'
+
 # Seconds to timeout while posting
 TIMEOUT = 60
 
@@ -195,10 +205,10 @@ def post_bbcode(bbcode, subject, is_changelog_item):
         _do_post()
     
     login()
-    post_thread('6.0')
-    if is_changelog_item:
-        time.sleep(3)
-        post_thread('16.0')
+    if BOARD_MAIN:
+        post_thread(BOARD_MAIN)
+    if is_changelog_item and BOARD_SPEC:
+        post_thread(BOARD_SPEC)
 
 def make_bbcode():
     assert len(sys.argv) == 3
@@ -233,7 +243,7 @@ def make_bbcode():
       msgtxt = msg.childNodes[0].nodeValue
       lines = msgtxt.split('\n')
       for l in lines:
-        if l.startswith('!'): is_beta = True
+        if l.startswith(SPEC_CHAR): is_beta = True
       title = '[' + authortxt + '] ' + lines[0]
     else:
       msgtxt = EMPTY_MESSAGE
