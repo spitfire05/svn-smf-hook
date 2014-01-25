@@ -62,7 +62,7 @@ TIMEOUT = 60
 MAX_LEN = 20000
 
 # Message to post when commit contains no message
-EMPTY_MESSAGE = '[i]None[/]'
+EMPTY_MESSAGE = '[i]None[/i]'
 
 # Log paths, or None to disable
 LOG_STDOUT = '/tmp/hook-stdout'
