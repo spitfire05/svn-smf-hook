@@ -28,13 +28,13 @@
 #
 # Tested with SMF 2.0.6
 
-import sys, os, re, urllib, urllib2, cookielib, threading, time, subprocess, fnmatch, urlparse
+import sys, os, urllib, urllib2, cookielib, threading, time, fnmatch, urlparse
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
 
 # Parse config
 try:
-    execfile('svn-smf-hook.conf', globals())
+    execfile(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'svn-smf-hook.conf'), globals())
 except Exception, e:
     print >>sys.stderr, 'Failed to parse config file: ' + str(e)
     sys.exit(1)
