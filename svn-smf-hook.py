@@ -28,54 +28,16 @@
 #
 # Tested with SMF 2.0.6
 
-### CONFIG
-
-# Forum username
-USER = 'user'
-
-# Forum password
-PASSWORD = 'password'
-
-# URL of forum index.
-FORUM_URL = 'http://example.com/index.php'
-
-# URL of svn repo (can be file:// also).
-# Make sure the script can read this without providing password.
-# (aka password is cached)
-SVN_URL = 'svn://example.com/repo' 
-
-# Board id where to post all commits, or None to disable
-BOARD_MAIN = '1.0'
-
-# Board id where to post only commits marked with SPEC_CHAR, or None to disable
-BOARD_SPEC = '2.0'
-
-# Character, or string, to mark commits as special
-# Will work only if put on beginning of a line.
-SPEC_CHAR = '!'
-
-# Seconds to timeout while posting
-TIMEOUT = 60
-
-# Maximum line length of post. Very long posts can fail
-# (probably treated as spam by forum software)
-MAX_LEN = 20000
-
-# Message to post when commit contains no message
-EMPTY_MESSAGE = '[i]None[/i]'
-
-# Log paths, or None to disable
-LOG_STDOUT = '/tmp/hook-stdout'
-LOG_STDERR = '/tmp/hook-stderr'
-
-# Trac URL, or None to disable Trac integration
-TRAC_URL = 'http://trac.example.com'
-
-### END OF CONFIG
-
 import sys, os, re, urllib, urllib2, cookielib, threading, time, subprocess, fnmatch, urlparse
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
+
+# Parse config
+try:
+    execfile('svn-smf-hook.conf', globals())
+except Exception, e:
+    print >>sys.stderr, 'Failed to parse config file: ' + str(e)
+    sys.exit(1)
 
 if LOG_STDOUT:
     sys.stdout = open(LOG_STDOUT, 'a')
@@ -298,7 +260,7 @@ with the message:
 
 [quote]""" + msgtxt + """[/quote]"""
     return bbcode, title, is_beta
-
+    
 bbcode, subject, is_beta = make_bbcode()
 #post_bbcode(bbcode, subject, is_beta)
 t = poster()

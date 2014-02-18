@@ -11,7 +11,7 @@ Tested with SMF 2.0.6
 
 NOTE: Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
 
-Before you deploy this as hook, make sure to properly configure it. Configuration is at the top of the file.
+Before you deploy this as hook, make sure to properly configure it in *svn-smf.conf* file.
 
 The post produced by this hook will look roughly like this:
 
