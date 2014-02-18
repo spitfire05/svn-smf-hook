@@ -47,7 +47,7 @@ SVN_URL = 'svn://example.com/repo'
 # Board id where to post all commits, or None to disable
 BOARD_MAIN = '1.0'
 
-# Board id where to post only commits marked with SPEC_CHAR
+# Board id where to post only commits marked with SPEC_CHAR, or None to disable
 BOARD_SPEC = '2.0'
 
 # Character, or string, to mark commits as special
@@ -136,7 +136,7 @@ def post_bbcode(bbcode, subject, is_changelog_item):
         get_phpsessid()
 
         # POST request to login2
-        host = urlparse.urlparse(FORUM_URL)
+        host = urlparse.urlparse(FORUM_URL)[1]
         data = urllib.urlencode({'user': username, 'passwrd': password, 'cookielength': '-1', 'cookieneverexp': 'on'})
         headers = {
             'Host': host,
@@ -208,6 +208,7 @@ def post_bbcode(bbcode, subject, is_changelog_item):
     if BOARD_MAIN:
         post_thread(BOARD_MAIN)
     if is_changelog_item and BOARD_SPEC:
+        time.sleep(3)
         post_thread(BOARD_SPEC)
 
 def make_bbcode():
