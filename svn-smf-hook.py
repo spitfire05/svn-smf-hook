@@ -259,6 +259,8 @@ with the message:
 with the message:
 
 [quote]""" + msgtxt + """[/quote]"""
+    bbcode = bbcode.encode('ascii', 'replace')
+    title = title.encode('ascii', 'replace')
     return bbcode, title, is_beta
     
 bbcode, subject, is_beta = make_bbcode()
