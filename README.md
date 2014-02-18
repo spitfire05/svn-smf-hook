@@ -7,6 +7,12 @@ You can use this script as post-commit hook of your svn repo,
 and it'll announce each commit as new topic on selected boards,
 designed to work with Simple Machines Forums.
 
+The arguments are the default arguments accepted by svn post-commit hook:
+
+~~~
+./svn-smf-hook.py path-to-repo revision
+~~~
+
 Tested with SMF 2.0.6
 
 NOTE: Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
