@@ -13,7 +13,7 @@ The arguments are the default arguments accepted by svn post-commit hook:
 ./svn-smf-hook.py path-to-repo revision
 ~~~
 
-Tested with SMF 2.0.6
+Tested with SMF 2.0
 
 NOTE: Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
 
