@@ -220,16 +220,15 @@ def make_bbcode():
       title = None
     
     
-    regexp = re.compile('\s(#\d+)|^(#\d+)', re.MULTILINE)
+    regexp = re.compile('(#\d+)\s')
     m = regexp.search(msgtxt)
     while m:
-        ticket = [x for x in m.groups() if x][0]
-        p = m.groups().index(ticket)
+        ticket = m.groups()[0]
         msgtxt = replace(
                         msgtxt,
                         '[url=' + TRAC_URL + '/ticket/%s]%s[/url]' % (ticket[1:], ticket),
-                        m.start(p) + 1,
-                        m.end(p)
+                        m.start(),
+                        m.end() - 1 # Because regex is 1 char longer than matching group
                         )
         m = regexp.search(msgtxt)
 
