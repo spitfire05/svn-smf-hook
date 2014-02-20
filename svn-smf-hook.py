@@ -28,7 +28,7 @@
 #
 # Tested with SMF 2.0.6
 
-import sys, os, urllib, urllib2, cookielib, threading, time, fnmatch, urlparse
+import sys, os, urllib, urllib2, cookielib, threading, time, fnmatch, urlparse, re
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
 
@@ -64,6 +64,13 @@ class poster(threading.Thread):
     def run(self):
         post_bbcode(self.bbcode, self.subject, self.is_changelog_item)
 
+def replace(org, rep, start, end):
+    """
+    Injects rep into org replacing characters from start to end.
+    """
+    org = org[:start + 1] + rep + org[end:]
+    return org
+        
 def fix_unicode(s):
     s = list(s)
     out = []
@@ -211,16 +218,20 @@ def make_bbcode():
     else:
       msgtxt = EMPTY_MESSAGE
       title = None
-
-    words = msgtxt.split()
-    for w in words:
-      if w.startswith('#'):
-        try:
-            if TRAC_URL:
-                ticket = ''.join([x for x in w[1:] if x in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')])
-                msgtxt = msgtxt.replace('#' + ticket, '[url=' + TRAC_URL + '/ticket/%s]%s[/url]' % (ticket, '#' + ticket))
-        except:
-          continue
+    
+    
+    regexp = re.compile('\s(#\d+)|^(#\d+)', re.MULTILINE)
+    m = regexp.search(msgtxt)
+    while m:
+        ticket = [x for x in m.groups() if x][0]
+        p = m.groups().index(ticket)
+        msgtxt = replace(
+                        msgtxt,
+                        '[url=' + TRAC_URL + '/ticket/%s]%s[/url]' % (ticket[1:], ticket),
+                        m.start(p),
+                        m.end(p)
+                        )
+        m = regexp.search(msgtxt)
 
     pathmsg = []
 
