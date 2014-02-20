@@ -68,7 +68,7 @@ def replace(org, rep, start, end):
     """
     Injects rep into org replacing characters from start to end.
     """
-    org = org[:start + 1] + rep + org[end:]
+    org = org[:start] + rep + org[end:]
     return org
         
 def fix_unicode(s):
@@ -228,7 +228,7 @@ def make_bbcode():
         msgtxt = replace(
                         msgtxt,
                         '[url=' + TRAC_URL + '/ticket/%s]%s[/url]' % (ticket[1:], ticket),
-                        m.start(p),
+                        m.start(p) + 1,
                         m.end(p)
                         )
         m = regexp.search(msgtxt)
