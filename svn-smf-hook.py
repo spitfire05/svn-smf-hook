@@ -107,12 +107,19 @@ def post_bbcode(bbcode, subject, is_changelog_item):
     def login():
         global headers
         # First, GET request
-        out = urllib2.urlopen(url_login + '?action=login')
+        out = urllib2.urlopen(url_login + '?action=login', timeout=TIMEOUT)
         get_phpsessid()
 
         # POST request to login2
         host = urlparse.urlparse(FORUM_URL)[1]
-        data = urllib.urlencode({'user': username, 'passwrd': password, 'cookielength': '-1', 'cookieneverexp': 'on'})
+        data = urllib.urlencode(
+            {
+                'user': username,
+                'passwrd': password,
+                'cookielength': '-1',
+                'cookieneverexp': 'on'
+            }
+        )
         headers = {
             'Host': host,
             'Accept': "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5",
@@ -126,8 +133,12 @@ def post_bbcode(bbcode, subject, is_changelog_item):
             'DNT': '1',
             'Content-Type': 'application/x-www-form-urlencoded',
             };
-        req = urllib2.Request(url_login + '?PHPSESSID=' + phpsessid + '&action=login2', data = data, headers = headers)
-        out = urllib2.urlopen(req)
+        req = urllib2.Request(
+            url_login + '?PHPSESSID=' + phpsessid + '&action=login2',
+            data = data,
+            headers = headers
+        )
+        out = urllib2.urlopen(req, timeout=TIMEOUT)
         assert '<span>%s</span>' % username in out.read(), 'login probably failed'
     
     def post_thread(forumid):
@@ -148,15 +159,21 @@ def post_bbcode(bbcode, subject, is_changelog_item):
             data.update(sc)
             data = urllib.urlencode(data)
             headers['Referer'] = url_post + '?action=post;board=' + forumid
-            req = urllib2.Request(url_post + '?action=post2;start=0;board=' + forumid, data = data, headers = headers)
-            out = urllib2.urlopen(req)
+            req = urllib2.Request(
+                url_post + '?action=post2;start=0;board=' + forumid, data = data,
+                headers = headers
+            )
+            out = urllib2.urlopen(req, timeout=TIMEOUT)
             content = out.read()
             if 'Your session timed out while posting.' in content:
                 # Try till it works, or till script time-out...
                 _do_post()        
 
         # GET New topic page
-        out = urllib2.urlopen(url_post + '?PHPSESSID=' + phpsessid + '&action=post;board=' + forumid)
+        out = urllib2.urlopen(
+            url_post + '?PHPSESSID=' + phpsessid + '&action=post;board=' + forumid,
+            timeout=TIMEOUT
+        )
 
         seqnum = None
         last = None
@@ -183,7 +200,7 @@ def post_bbcode(bbcode, subject, is_changelog_item):
     if BOARD_MAIN:
         post_thread(BOARD_MAIN)
     if is_changelog_item and BOARD_SPEC:
-        time.sleep(3)
+        time.sleep(3) # sleep to by-pass SMF spambot detection
         post_thread(BOARD_SPEC)
 
 def make_bbcode():
@@ -278,16 +295,11 @@ with the message:
     bbcode = bbcode.encode('ascii', 'replace')
     title = title.encode('ascii', 'replace')
     return bbcode, title, is_beta
-    
-bbcode, subject, is_beta = make_bbcode()
-#post_bbcode(bbcode, subject, is_beta)
-t = poster()
-t.setDaemon(True)
-t.set(bbcode, subject, is_beta)
-t.start()
-startTime = time.time()
-while True:
-    time.sleep(0.01)
-    if not t.isAlive() or (time.time() - startTime > TIMEOUT):
-        sys.exit()
+
+if __name__ == '__main__':    
+    bbcode, subject, is_beta = make_bbcode()
+    t = poster()
+    t.setDaemon(True)
+    t.set(bbcode, subject, is_beta)
+    t.start()
     
