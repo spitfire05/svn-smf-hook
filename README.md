@@ -24,7 +24,9 @@ This script is continously developed, so be sure to check back for updated versi
 
 ## Dependencies
 
-All that's needed to run this script is Python 2 and subversion. No other external dependencies.
+All that's needed to run this script is Python 2.6 (or newer) and subversion. No other external dependencies.
+
+Python 3 is not supported atm, though it'd be probably easy to convert the script with [*2to3*](http://docs.python.org/2/library/2to3.html) tool.
 
 ## Installation
 
