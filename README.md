@@ -10,13 +10,17 @@ and it'll announce each commit as new topic on selected boards.
 
 Tested to be compatible with Simple Machines Forum 2.0.x
 
-This script is continously developed, so be sure to check back for updated versions! :smile:
-
 The arguments are the default arguments accepted by svn post-commit hook:
 
 ~~~
 ./svn-smf-hook.py /absolute/path/to/your/repo revision
 ~~~
+
+## Curent status
+
+Working like a charm.
+
+This script is continously developed, so be sure to check back for updated versions! :smile:
 
 ## Installation
 
