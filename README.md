@@ -15,7 +15,7 @@ This script is continously developed, so be sure to check back for updated versi
 The arguments are the default arguments accepted by svn post-commit hook:
 
 ~~~
-./svn-smf-hook.py path-to-repo revision
+./svn-smf-hook.py /absolute/path/to/your/repo revision
 ~~~
 
 ## Installation
@@ -27,7 +27,7 @@ Just download [*svn-smf-hook.py*](https://raw2.github.com/spitfire05/svn-smf-hoo
 ``` sh
 #!/bin/sh
 
-REPO=/path/to/your/repo
+REPO=/aboslute/path/to/your/repo
 /usr/bin/env python $REPO/hooks/svn-smf-hook.py $1 $2
 ```
 
