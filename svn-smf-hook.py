@@ -40,9 +40,15 @@ except Exception, e:
     sys.exit(1)
 
 if LOG_STDOUT:
-    sys.stdout = open(LOG_STDOUT, 'a')
+    try:
+        sys.stdout = open(LOG_STDOUT, 'a')
+    except Exception, e:
+        print 'Failed to start stdout log at %s - %s' % (LOG_STDOUT, e)
 if LOG_STDERR:
-    sys.stderr = open(LOG_STDERR, 'a')
+    try:
+        sys.stderr = open(LOG_STDERR, 'a')
+    except Exception, e:
+        print 'Failed to start stderr log at %s - %s' % (LOG_STDERR, e)
 
 actions = {
   'D': 'deleted ',
