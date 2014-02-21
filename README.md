@@ -1,23 +1,61 @@
 svn-smf-hook
 ============
 
-SVN post-commit hook script postig commit info to Simple Machines Forum
+## Description
+
+[Subversion](https://subversion.apache.org/) post-commit hook script posting commit info to [Simple Machines Forum](http://www.simplemachines.org/)
 
 You can use this script as post-commit hook of your svn repo,
-and it'll announce each commit as new topic on selected boards,
-designed to work with Simple Machines Forums.
+and it'll announce each commit as new topic on selected boards.
+
+Tested to be compatible with Simple Machines Forum 2.0.x
 
 The arguments are the default arguments accepted by svn post-commit hook:
 
 ~~~
-./svn-smf-hook.py path-to-repo revision
+./svn-smf-hook.py /absolute/path/to/your/repo revision
 ~~~
 
-Tested with SMF 2.0
+## Curent status
 
-NOTE: Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
+Working like a charm.
 
-Before you deploy this as hook, make sure to properly configure it in *svn-smf-hook.conf* file.
+This script is continously developed, so be sure to check back for updated versions! :smile:
+
+## Installation
+
+Just download [*svn-smf-hook.py*](https://raw2.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.py) and [*svn-smf-hook.conf*](https://raw2.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.conf) files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* script.
+
+### Example *post-commit* file
+
+``` sh
+#!/bin/sh
+
+REPO=/aboslute/path/to/your/repo
+/usr/bin/env python $REPO/hooks/svn-smf-hook.py $1 $2
+```
+
+## Configuration
+
+Before you deploy this as hook, make sure to properly configure it in *svn-smf-hook.conf* file. Config options are documented in conf file.
+
+## Trac integration
+
+**svn-smf-hook** features [Trac](http://trac.edgewall.org/) integration. You can enable it by setting TRAC_URL config option to the url of your Trac installation.
+
+With Trac integration enabled, the revision number, changed files and all ticket references in commit message (for example: *ticket #1234*) will be converted into links to their Trac pages.
+
+### Note
+
+Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
+
+## Integration with other Project Management Systems?
+
+Please fill an issue with request, and I'll probably make it happen :wink:
+
+Pull requests are also welcome.
+
+## Example forum post
 
 The post produced by this hook will look roughly like this:
 
@@ -35,5 +73,7 @@ update readme
 ~~~
 
 =
+
+## Credits
 
 The idea for this hook came from similiar hook for another forum software, by [FH]ctz.
