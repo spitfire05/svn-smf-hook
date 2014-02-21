@@ -25,7 +25,7 @@ Before you deploy this as hook, make sure to properly configure it in *svn-smf-h
 
 **svn-smf-hook** features [Trac](http://trac.edgewall.org/) integration. You can enable it by setting TRAC_URL config option to the url of your Trac installation.
 
-With Trac integration enabled, the revision number, changed files and all ticket references in commit message (for example: "ticket #1234") will be converted into links to their Trac pages.
+With Trac integration enabled, the revision number, changed files and all ticket references in commit message (for example: *ticket #1234*) will be converted into links to their Trac pages.
 
 ### Note
 
