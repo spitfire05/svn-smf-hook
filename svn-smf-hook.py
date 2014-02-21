@@ -28,7 +28,7 @@
 #
 # Tested with SMF 2.0.6
 
-import sys, os, urllib, urllib2, cookielib, threading, time, fnmatch, urlparse, re
+import sys, os, urllib, urllib2, cookielib, time, fnmatch, urlparse, re
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
 
@@ -59,16 +59,6 @@ actions = {
 
 phpsessid = None
 headers = None
-
-
-class poster(threading.Thread):
-    def set(self, bbcode, subject, is_changelog_item):
-        self.bbcode = bbcode
-        self.subject = subject
-        self.is_changelog_item = is_changelog_item
-    
-    def run(self):
-        post_bbcode(self.bbcode, self.subject, self.is_changelog_item)
 
 def replace(org, rep, start, end):
     """
@@ -298,8 +288,5 @@ with the message:
 
 if __name__ == '__main__':    
     bbcode, subject, is_beta = make_bbcode()
-    t = poster()
-    t.setDaemon(True)
-    t.set(bbcode, subject, is_beta)
-    t.start()
+    post_bbcode(self.bbcode, self.subject, self.is_changelog_item)
     
