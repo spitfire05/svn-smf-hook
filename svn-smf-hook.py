@@ -288,4 +288,4 @@ with the message:
 
 if __name__ == '__main__':    
     bbcode, subject, is_beta = make_bbcode()
-    post_bbcode(bbcode, subject, is_beta)    
+    post_bbcode(bbcode, subject, is_beta)
