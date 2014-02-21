@@ -64,6 +64,8 @@ With Trac integration enabled, the revision number, changed files and all ticket
 
 Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
 
+Personally, I use [this](http://trac.edgewall.org/attachment/wiki/TracMultipleProjects/ComprehensiveSolution/trac-post-commit-hook) Trac hook, and I find it working great. You can even close tickets via commit messages with it.
+
 ## Integration with other Project Management Systems?
 
 Please fill an issue with request, and I'll probably make it happen :wink:
