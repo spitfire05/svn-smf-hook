@@ -22,6 +22,10 @@ Working like a charm.
 
 This script is continously developed, so be sure to check back for updated versions! :smile:
 
+## Dependencies
+
+All that's needed to run this script is Python 2 and subversion. No other external dependencies.
+
 ## Installation
 
 Just download [*svn-smf-hook.py*](https://raw2.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.py) and [*svn-smf-hook.conf*](https://raw2.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.conf) files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* script.
