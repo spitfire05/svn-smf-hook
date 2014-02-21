@@ -288,5 +288,5 @@ with the message:
 
 if __name__ == '__main__':    
     bbcode, subject, is_beta = make_bbcode()
-    post_bbcode(self.bbcode, self.subject, self.is_changelog_item)
+    post_bbcode(bbcode, subject, is_beta)
     
