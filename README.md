@@ -19,7 +19,7 @@ Tested with SMF 2.0
 
 ## Installation
 
-Just download *svn-smf-hook.py* and *svn-smf-hook.conf* files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* script.
+Just download [*svn-smf-hook.py*](https://raw2.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.py) and [*svn-smf-hook.conf*](https://raw2.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.conf) files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* script.
 
 ### Example *post-commit* file
 
