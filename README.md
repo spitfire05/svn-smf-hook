@@ -39,6 +39,15 @@ REPO=/aboslute/path/to/your/repo
 /usr/bin/env python $REPO/hooks/svn-smf-hook.py $1 $2
 ```
 
+Or if you want it to be asynchronous (so the commit operation will not have to wait till posting ends):
+
+``` sh
+#!/bin/sh
+
+REPO=/aboslute/path/to/your/repo
+/usr/bin/env python $REPO/hooks/svn-smf-hook.py $1 $2 &
+```
+
 ## Configuration
 
 Before you deploy this as hook, make sure to properly configure it in *svn-smf-hook.conf* file. Config options are documented in conf file.
