@@ -3,19 +3,20 @@ svn-smf-hook
 
 ## Description
 
-SVN post-commit hook script postig commit info to Simple Machines Forum
+[Subversion](https://subversion.apache.org/) post-commit hook script posting commit info to [Simple Machines Forum](http://www.simplemachines.org/)
 
 You can use this script as post-commit hook of your svn repo,
-and it'll announce each commit as new topic on selected boards,
-designed to work with [Simple Machines Forum](http://www.simplemachines.org/).
+and it'll announce each commit as new topic on selected boards.
+
+Tested to be compatible with Simple Machines Forum 2.0.x
+
+This script is continously developed, so be sure to check back for updated versions! :smile:
 
 The arguments are the default arguments accepted by svn post-commit hook:
 
 ~~~
 ./svn-smf-hook.py path-to-repo revision
 ~~~
-
-Tested with SMF 2.0
 
 ## Installation
 
