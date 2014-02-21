@@ -17,6 +17,19 @@ The arguments are the default arguments accepted by svn post-commit hook:
 
 Tested with SMF 2.0
 
+## Installation
+
+Just download *svn-smf-hook.py* and *svn-smf-hook.conf* files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* script.
+
+### Example *post-commit* file
+
+``` sh
+#!/bin/sh
+
+REPO=/path/to/your/repo
+/usr/bin/env python $REPO/hooks/svn-smf-hook.py $1 $2
+```
+
 ## Configuration
 
 Before you deploy this as hook, make sure to properly configure it in *svn-smf-hook.conf* file. Config options are documented in conf file.
