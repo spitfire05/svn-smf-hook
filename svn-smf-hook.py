@@ -220,7 +220,7 @@ def make_bbcode():
       title = None
     
     
-    regexp = re.compile('(#\d+)\s')
+    regexp = re.compile(r'(#\d+)(?!\[)(?![0-9])')
     m = regexp.search(msgtxt)
     while m:
         ticket = m.groups()[0]
@@ -228,7 +228,7 @@ def make_bbcode():
                         msgtxt,
                         '[url=' + TRAC_URL + '/ticket/%s]%s[/url]' % (ticket[1:], ticket),
                         m.start(),
-                        m.end() - 1 # Because regex is 1 char longer than matching group
+                        m.end()
                         )
         m = regexp.search(msgtxt)
 
