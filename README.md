@@ -30,7 +30,7 @@ Python 3 is not supported atm, though it'd be probably easy to convert the scrip
 
 ## Installation
 
-Just download [*svn-smf-hook.py*](https://raw.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.py) and [*svn-smf-hook.conf*](https://raw.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.conf) files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* script.
+Just download [*svn-smf-hook.py*](https://raw.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.py) and [*svn-smf-hook.conf*](https://raw.github.com/spitfire05/svn-smf-hook/master/svn-smf-hook.conf) files and place it in your *hooks* folder. Then configure the script and run it from *post-commit* hook.
 
 ### Example *post-commit* file
 
