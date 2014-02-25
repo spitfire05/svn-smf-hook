@@ -32,6 +32,22 @@ import sys, os, urllib, urllib2, cookielib, time, fnmatch, urlparse, re, threadi
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
 
+# Default config values
+
+USER = 'user'
+PASSWORD = 'password'
+FORUM_URL = 'http://example.com/index.php'
+SVN_URL = 'svn://example.com/repo'
+BOARD_MAIN = None
+BOARD_SPEC = None
+SPEC_CHAR = '!'
+TIMEOUT = 60
+MAX_LEN = 20000
+EMPTY_MESSAGE = '[i]User did not write any message[/i]'
+LOG_STDOUT = None
+LOG_STDERR = None
+TRAC_URL = None
+
 # Parse config
 try:
     execfile(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'svn-smf-hook.conf'), globals())
