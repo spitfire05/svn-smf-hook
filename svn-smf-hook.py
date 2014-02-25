@@ -28,7 +28,7 @@
 #
 # Tested with SMF 2.0.6
 
-import sys, os, urllib, urllib2, cookielib, time, fnmatch, urlparse, re
+import sys, os, urllib, urllib2, cookielib, time, fnmatch, urlparse, re, threading
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
 
@@ -59,6 +59,15 @@ actions = {
 
 phpsessid = None
 headers = None
+
+class poster(threading.Thread):
+    def set(self, bbcode, subject, is_beta):
+        self.bbcode = bbcode
+        self.subject = subject
+        self.is_beta = is_beta
+        
+    def run(self):
+        post_bbcode(self.bbcode, self.subject, self.is_beta)
 
 def replace(org, rep, start, end):
     """
@@ -97,7 +106,7 @@ def post_bbcode(bbcode, subject, is_changelog_item):
     def login():
         global headers
         # First, GET request
-        out = urllib2.urlopen(url_login + '?action=login', timeout=TIMEOUT)
+        out = urllib2.urlopen(url_login + '?action=login')
         get_phpsessid()
 
         # POST request to login2
@@ -128,7 +137,7 @@ def post_bbcode(bbcode, subject, is_changelog_item):
             data = data,
             headers = headers
         )
-        out = urllib2.urlopen(req, timeout=TIMEOUT)
+        out = urllib2.urlopen(req)
         assert '<span>%s</span>' % username in out.read(), 'login probably failed'
     
     def post_thread(forumid):
@@ -153,17 +162,14 @@ def post_bbcode(bbcode, subject, is_changelog_item):
                 url_post + '?action=post2;start=0;board=' + forumid, data = data,
                 headers = headers
             )
-            out = urllib2.urlopen(req, timeout=TIMEOUT)
+            out = urllib2.urlopen(req)
             content = out.read()
             if 'Your session timed out while posting.' in content:
                 # Try till it works, or till script time-out...
                 _do_post()        
 
         # GET New topic page
-        out = urllib2.urlopen(
-            url_post + '?PHPSESSID=' + phpsessid + '&action=post;board=' + forumid,
-            timeout=TIMEOUT
-        )
+        out = urllib2.urlopen(url_post + '?PHPSESSID=' + phpsessid + '&action=post;board=' + forumid)
 
         seqnum = None
         last = None
@@ -288,4 +294,8 @@ with the message:
 
 if __name__ == '__main__':    
     bbcode, subject, is_beta = make_bbcode()
-    post_bbcode(bbcode, subject, is_beta)
+    t = poster()
+    t.daemon = True # daemon thread will be taken down when main thread finishes
+    t.set(bbcode, subject, is_beta)
+    t.start()
+    t.join(TIMEOUT) # wait for maximum of TIMEOUT seconds for thread to finish, then proceed
