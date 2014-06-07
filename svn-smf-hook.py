@@ -32,6 +32,10 @@ import sys, os, urllib, urllib2, cookielib, time, fnmatch, urlparse, re, threadi
 import htmlentitydefs as entities
 from xml.dom.minidom import parseString
 
+###########
+VERSION = 2
+###########
+
 # Default config values
 
 USER = 'user'
@@ -46,7 +50,8 @@ MAX_LEN = 20000
 EMPTY_MESSAGE = '[i]User did not write any message[/i]'
 LOG_STDOUT = None
 LOG_STDERR = None
-TRAC_URL = None
+PMS = None
+PMS_URL = None
 
 # Parse config
 try:
@@ -54,6 +59,9 @@ try:
 except Exception, e:
     print >>sys.stderr, 'Failed to parse config file: ' + str(e)
     sys.exit(1)
+if 'TRAC_URL' in globals() and PMS in (None, ''): # compatibility with older versions
+    PMS = 'trac'
+    PMS_URL = TRAC_URL
 
 if LOG_STDOUT:
     try:
@@ -101,6 +109,22 @@ def fix_unicode(s):
       else:
         out += x
     return ''.join(out)
+
+def ticketBB(ticket):
+    if PMS == 'trac':
+        return '[url=' + PMS_URL + '/ticket/%s]%s[/url]' % (ticket[1:], ticket)
+    elif PMS == 'redmine':
+        return '[url=' + PMS_URL + '/issue/%s]%s[/url]' % (ticket[1:], ticket)
+    else:
+        return ticket
+
+def actionBB(path, revision):
+    if PMS == 'trac':
+        return '  [url=' + PMS_URL + '/browser' + path.childNodes[0].nodeValue + '?rev=' + str(revision) + ']' + path.childNodes[0].nodeValue + '[/url]'
+    elif PMS == 'redmine':
+        return '  [url=' + PMS_URL + '/repository/changes' + path.childNodes[0].nodeValue + '?rev=' + str(revision) + ']' + path.childNodes[0].nodeValue + '[/url]'
+    else:
+        return path.childNodes[0].nodeValue
 
 def post_bbcode(bbcode, subject, is_changelog_item):
     global phpsessid
@@ -261,7 +285,7 @@ def make_bbcode():
         ticket = m.groups()[0]
         msgtxt = replace(
                         msgtxt,
-                        '[url=' + TRAC_URL + '/ticket/%s]%s[/url]' % (ticket[1:], ticket),
+                        ticketBB(ticket),
                         m.start(),
                         m.end()
                         )
@@ -274,10 +298,7 @@ def make_bbcode():
       if hasattr(path, 'tagName'):
         assert path.tagName == 'path'
         changedfiles += 1
-        if TRAC_URL:
-            pathmsg.append(actions[path.getAttribute('action')] + '  [url=' + TRAC_URL + '/browser' + path.childNodes[0].nodeValue + '?rev=' + str(revision) + ']' + path.childNodes[0].nodeValue + '[/url]')
-        else:
-            pathmsg.append(actions[path.getAttribute('action')] + path.childNodes[0].nodeValue)
+        pathmsg.append(actions[path.getAttribute('action')] + actionBB(path, revision))
     
     length = len('/n'.join(pathmsg))
     if length > MAX_LEN:
@@ -288,8 +309,16 @@ def make_bbcode():
     if title is None:
       title = '[' + authortxt + '] ' + 'created revision ' + str(revision) + ' with ' + str(changedfiles) + ' changes'
 
-    if TRAC_URL:
-        bbcode = """[b]""" + authortxt + """[/b] made revision [b][url=""" + TRAC_URL + """/changeset/""" + str(revision) + """]""" + str(revision) + """[/url][/b] changing the following files:
+    if PMS == 'trac':
+        bbcode = """[b]""" + authortxt + """[/b] made revision [b][url=""" + PMS_URL + """/changeset/""" + str(revision) + """]""" + str(revision) + """[/url][/b] changing the following files:
+
+[quote][tt]""" + '\n'.join(pathmsg) + """[/tt][/quote]
+
+with the message:
+
+[quote]""" + msgtxt + """[/quote]"""
+    elif PMS == 'redmine':
+        bbcode = """[b]""" + authortxt + """[/b] made revision [b][url=""" + PMS_URL + """/repository/revisions/""" + str(revision) + """]""" + str(revision) + """[/url][/b] changing the following files:
 
 [quote][tt]""" + '\n'.join(pathmsg) + """[/tt][/quote]
 
