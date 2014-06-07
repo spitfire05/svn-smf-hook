@@ -118,7 +118,7 @@ def ticketBB(ticket):
     else:
         return ticket
 
-def actionBB(path):
+def actionBB(path, revision):
     if PMS == 'trac':
         return '  [url=' + PMS_URL + '/browser' + path.childNodes[0].nodeValue + '?rev=' + str(revision) + ']' + path.childNodes[0].nodeValue + '[/url]'
     elif PMS == 'redmine':
@@ -298,7 +298,7 @@ def make_bbcode():
       if hasattr(path, 'tagName'):
         assert path.tagName == 'path'
         changedfiles += 1
-        pathmsg.append(actions[path.getAttribute('action')] + actionBB(path))
+        pathmsg.append(actions[path.getAttribute('action')] + actionBB(path, revision))
     
     length = len('/n'.join(pathmsg))
     if length > MAX_LEN:
