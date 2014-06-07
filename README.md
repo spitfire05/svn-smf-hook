@@ -54,17 +54,32 @@ REPO=/aboslute/path/to/your/repo
 
 Before you deploy this as hook, make sure to properly configure it in *svn-smf-hook.conf* file. Config options are documented in conf file.
 
-## Trac integration
+## Integration with Project Management Systems
 
-**svn-smf-hook** features [Trac](http://trac.edgewall.org/) integration. You can enable it by setting TRAC_URL config option to the url of your Trac installation.
+**svn-smf-hook** features [Trac](http://trac.edgewall.org/) and [Redmine](http://redmine.org) integration. You can enable it by setting PMS and PMS_URL config option to the url of your trac/redmine installation.
 
-With Trac integration enabled, the revision number, changed files and all ticket references in commit message (for example: *ticket #1234*) will be converted into links to their Trac pages.
+With PMS integration enabled, the revision number, changed files and all ticket references in commit message (for example: *ticket #1234*) will be converted into links to their PMS pages.
 
-### Note
+### Supported Project Management Systems and corresponding config values
 
-Even though this script features Trac integration, it does not work as Trac's post-commit hook. To have your tickets in Trac updated on commit, use the Trac svn hook together with this script. Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
+PMS value | what PMS_URL should point to | Example
+--------- | ---------------------------- | -------
+'trac' | Root trac address | PMS_URL = 'http://trac.myproject.net'
+'redmine' | Root of the project | PMS_URL = 'http://redmine.myproject.org/projects/fooproject'
+
+### Note about post-commit hooks
+
+Even though this script features PMS integration, it does not work as post-commit hook refreshing repo status in PMS. To have your tickets in PMS updated on commit, use the PMS svn hook together with this script.
+
+#### Trac
+
+Read: http://trac.edgewall.org/wiki/TracRepositoryAdmin#Subversion
 
 Personally, I use [this](http://trac.edgewall.org/attachment/wiki/TracMultipleProjects/ComprehensiveSolution/trac-post-commit-hook) Trac hook, and I find it working great. You can even close tickets via commit messages with it.
+
+#### Redmine
+
+Read: http://www.redmine.org/projects/redmine/wiki/HowTo_setup_automatic_refresh_of_repositories_in_Redmine_on_commit
 
 ## Integration with other Project Management Systems?
 
