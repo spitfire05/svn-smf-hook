@@ -59,7 +59,7 @@ try:
 except Exception, e:
     print >>sys.stderr, 'Failed to parse config file: ' + str(e)
     sys.exit(1)
-if 'TRAC_URL' in globals(): # compatibility with older versions
+if 'TRAC_URL' in globals() and PMS in (None, ''): # compatibility with older versions
     PMS = 'trac'
     PMS_URL = TRAC_URL
 
